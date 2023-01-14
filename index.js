@@ -1,6 +1,17 @@
+const fs = require('fs');
+const { title } = require('process');
+
 class productsManager {
   constructor() {
-    this.wareShop = [];
+    this.path = './wareshop.json';
+  }
+
+  initWareShop() {
+    if (fs.existsSync(this.path)) {
+      return;
+    } else {
+      fs.writeFileSync(this.path, '[]');
+    }
   }
 
   /**
@@ -26,17 +37,30 @@ class productsManager {
         id: this.idManager(),
       };
 
-      this.wareShop.push(product);
+      const obj = this.readParsedFile();
+
+      obj.push(product);
+
+      fs.writeFileSync(this.path, `${JSON.stringify(obj)}`);
     } else {
       console.error(`Todos los parametros son obligatorios!`);
     }
   }
 
+  readParsedFile() {
+    const content = fs.readFileSync(this.path, 'utf-8');
+    const obj = JSON.parse(content);
+
+    return obj;
+  }
+
   idManager() {
-    let products = this.wareShop.length;
+    const obj = this.readParsedFile();
+
+    let products = obj.length;
 
     if (products != 0) {
-      let lastId = this.wareShop[products - 1].id;
+      let lastId = obj[products - 1].id;
 
       return lastId + 1;
     } else {
@@ -45,7 +69,10 @@ class productsManager {
   }
 
   codeManager(code) {
-    if (!this.wareShop.some((element) => element.code == code)) {
+    const content = fs.readFileSync(this.path, 'utf-8');
+    const obj = JSON.parse(content);
+
+    if (!obj.some((element) => element.code == code)) {
       return code;
     } else {
       console.warn(`El codigo ${code} ya se encuentra fichado`);
@@ -53,30 +80,57 @@ class productsManager {
   }
 
   getProducts() {
-    return this.wareShop;
+    const obj = this.readParsedFile();
+
+    return obj;
   }
 
   getProductById(id) {
-    return this.wareShop.find((element) => element.id == id);
+    const obj = this.readParsedFile();
+
+    return obj.find((element) => element.id == id);
+  }
+
+  updateProduct(id, parameter, newValue) {
+    const obj = this.readParsedFile();
+    const product = obj.find((element) => element.id == id);
+    product[parameter] = newValue;
+
+    fs.writeFileSync(this.path, `${JSON.stringify(obj)}`);
+  }
+
+  deleteProduct(id) {
+    const obj = this.readParsedFile();
+    const newArray = obj.filter((element) => element.id !== id);
+
+    fs.writeFileSync(this.path, `${JSON.stringify(newArray)}`);
   }
 }
 
 const manager = new productsManager();
 
-manager.addNewProduct('zapatos', 'unos zapatos', 100, 'url falsa', 113328, 2);
-manager.addNewProduct('collar', 'un collar', 700, 'url falsa', 134324, 10);
-manager.addNewProduct('mochila', 'una mochila', 2100, 'url falsa', 435634, 70);
-console.log(manager.getProductById(1));
-console.log('---------------------------------------------');
-console.log(manager.getProducts());
-
-console.log('---------------------------------------------');
+manager.initWareShop();
 
 manager.addNewProduct(
-  'zapatos copia',
-  'unos zapatos',
-  100,
-  'url falsa',
-  113328,
+  'zapato',
+  'es un zapato',
+  900,
+  'link random',
+  12463734,
   2
 );
+manager.addNewProduct(
+  'sombrero',
+  'es un sombrero',
+  200,
+  'link random',
+  63734,
+  10
+);
+
+console.log(manager.getProducts());
+console.log(manager.getProductById(1));
+
+manager.updateProduct(1, 'title', 'colchon');
+
+manager.deleteProduct(1);
