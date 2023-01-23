@@ -1,5 +1,31 @@
 const fs = require('fs');
-const { title } = require('process');
+const express = require('express');
+
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/products', (req, res) => {
+  const obj = manager.getProducts();
+
+  const { limit } = req.query;
+
+  if (limit) {
+    res.send(obj.slice(0, limit));
+  } else {
+    res.send(obj);
+  }
+});
+
+app.get('/products/:id', (req, res) => {
+  const { id } = req.params;
+
+  const obj = manager.getProductById(id);
+
+  res.json(obj);
+});
+
+app.listen(3000, () => console.log('escuchando en el puerto 3000'));
 
 class productsManager {
   constructor() {
@@ -127,10 +153,3 @@ manager.addNewProduct(
   63734,
   10
 );
-
-console.log(manager.getProducts());
-console.log(manager.getProductById(1));
-
-manager.updateProduct(1, 'title', 'colchon');
-
-manager.deleteProduct(1);

@@ -1,5 +1,5 @@
 {
-  "name": "backendsabados",
+  "name": "backendarruabrian",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,6 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Brian Arrua",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArruaBrian/BackendBrianArrua.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ArruaBrian/BackendBrianArrua/issues"
+  },
+  "homepage": "https://github.com/ArruaBrian/BackendBrianArrua#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
