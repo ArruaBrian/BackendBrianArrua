@@ -130,25 +130,25 @@ const manager = new productsManager();
 
 manager.initWareShop();
 
-manager.addNewProduct(
-  'zapato',
-  'es un zapato',
-  900,
-  'link random',
-  12463734,
-  2,
-  'calzados',
-  true
-);
-manager.addNewProduct(
-  'sombrero',
-  'es un sombrero',
-  200,
-  'link random',
-  63734,
-  10,
-  'accesorios',
-  true
-);
+// manager.addNewProduct(
+//   'zapato',
+//   'es un zapato',
+//   900,
+//   'link random',
+//   12463734,
+//   2,
+//   'calzados',
+//   true
+// );
+// manager.addNewProduct(
+//   'sombrero',
+//   'es un sombrero',
+//   200,
+//   'link random',
+//   63734,
+//   10,
+//   'accesorios',
+//   true
+// );
 
 module.exports = manager;

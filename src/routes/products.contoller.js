@@ -6,16 +6,18 @@ const router = Router();
 router.get('/', (req, res) => {
   const { limit } = req.query;
 
+  let products = '';
+
   if (limit) {
-    res.json(manager.getProducts().slice(0, limit));
+    products = manager.getProducts().slice(0, limit);
+    res.json(products);
   } else {
-    res.json(manager.getProducts());
+    products = manager.getProducts();
+    res.json(products);
   }
 });
 
 router.post('/', (req, res) => {
-  console.log(req.query);
-
   const { title, description, price, thumb, code, stock, category, status } =
     req.query;
 
@@ -29,6 +31,8 @@ router.post('/', (req, res) => {
     category,
     status
   );
+
+  io.emit('postNewProduct', manager.readParsedFile());
 
   res.send('ok');
 });
